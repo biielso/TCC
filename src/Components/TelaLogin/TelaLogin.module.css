@@ -1,0 +1,126 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  
+  /* Fundo centralizado */
+  body {
+    height: 100vh;
+    background: linear-gradient(135deg, #c1e3ed 0%, #47a4c1 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Container da caixa */
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Caixa principal */
+  .caixa {
+    background: #47a4c1;
+    width: 350px;
+    min-height: 540px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    color: #000;
+  }
+  
+  /* Título e subtítulo */
+  .texto {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .texto h1 {
+    font-size: 28px;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+  }
+  
+  .texto p {
+    font-size: 16px;
+    margin-top: 10px;
+    line-height: 1.4em;
+  }
+  
+  /* Campos */
+  .campo {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+  
+  .barra {
+    width: 100%;
+    height: 45px;
+    background: #cfca96;
+    border: none;
+    border-radius: 25px;
+    padding: 0 15px;
+    font-size: 15px;
+    transition: 0.3s ease;
+    outline: none;
+  }
+  
+  /* Efeito de foco */
+  .barra:focus {
+    background: #f1edbe;
+    box-shadow: 0 0 5px #ffffff;
+  }
+  
+  /* Botão */
+  .entrar {
+    width: 100%;
+    height: 50px;
+    background-color: #fcfdfe;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+  
+  .entrar:hover {
+    background-color: #e3f2fd;
+    transform: translateY(-2px);
+  }
+  
+  /* Links */
+  .link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #000;
+  }
+  
+  .link a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .link a:hover {
+    text-decoration: underline;
+  }

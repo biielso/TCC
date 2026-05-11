@@ -1,31 +1,52 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa o hook para navegação
+import { useNavigate } from 'react-router-dom';
 import styles from './Telacadastro.module.css';
+import { cadastrarUsuario } from '../../service/api'; // 🌟 Importando a API
 
 export default function TelaCadastro() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState(''); // 🌟 Novo estado para a senha
   const [nascimento, setNascimento] = useState('');
   const [cpf, setCpf] = useState('');
   const [cep, setCep] = useState('');
 
-  const navigate = useNavigate(); // Hook do React Router
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  // 🌟 Transformamos a função em 'async' para poder esperar a resposta da API
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    alert(
-      `Cadastro realizado:\nNome: ${nome}\nEmail: ${email}\nNascimento: ${nascimento}\nCPF: ${cpf}\nCEP: ${cep}`
-    );
 
-    // Aqui você pode integrar com uma API real de cadastro
+    // 1. Montamos o "pacote" (JSON) exatamente com os nomes que o Java espera
+// 1. Montamos o "pacote" (JSON)
+    const novoUsuario = {
+      nome: nome,
+      email: email,
+      senha: senha,
+      tipo: "CLIENTE", 
+      nascimento: nascimento,
+      // 👇 A MÁGICA ACONTECE AQUI: O .replace tira tudo que não for número!
+      cpf: cpf.replace(/\D/g, ''), 
+      cep: cep.replace(/\D/g, '')
+    };
 
-    // Após o cadastro, você pode redirecionar o usuário automaticamente para o login:
-    navigate('/login');
+    try {
+      // 2. Enviamos para o Java salvar no banco de dados
+      const usuarioSalvo = await cadastrarUsuario(novoUsuario);
+      
+      // 3. Se deu tudo certo, redireciona para o login
+      navigate('/login');
+      
+    } catch (erro) {
+      // 4. Se o Java der erro (ex: email já existe, faltou dado), cai aqui
+      console.error("Erro ao cadastrar na API:", erro);
+      alert('Erro ao realizar o cadastro. Verifique os dados e tente novamente.');
+    }
   };
 
   const handleLoginClick = (e) => {
     e.preventDefault();
-    navigate('/login'); // Redireciona para a tela de login
+    navigate('/login');
   };
 
   return (
@@ -52,13 +73,27 @@ export default function TelaCadastro() {
 
           <div className={styles.campo}>
             <label htmlFor="email">E-MAIL</label>
-            <input
+            <input 
               type="email"
               id="email"
               className={styles.barra}
               placeholder="Digite seu e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          {/* 🌟 NOVO CAMPO DE SENHA */}
+          <div className={styles.campo}>
+            <label htmlFor="senha">SENHA</label>
+            <input
+              type="password"
+              id="senha"
+              className={styles.barra}
+              placeholder="Crie uma senha segura"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
               required
             />
           </div>

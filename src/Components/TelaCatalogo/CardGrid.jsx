@@ -1,17 +1,25 @@
+import React from "react";
 import Card from "./Card";
 import ContatoBox from "./ContatoBox";
 import styles from "./TelaCatalogo.module.css";
 
-export default function CardGrid({ modoTela, itensPagina, onNavigate }) {
+const CardGrid = React.forwardRef(function CardGrid(
+  { modoTela, itensPagina, onCardClick },
+  ref
+) {
   return (
-    <section className={styles.grid}>
+    <section ref={ref} tabIndex={0} className={styles.grid}>
       {modoTela === "contato" ? (
         <ContatoBox />
       ) : (
         itensPagina.map((item, idx) => (
-          <Card key={idx} item={item} onNavigate={onNavigate} />
+          <div key={idx} data-card tabIndex={0}>
+            <Card item={item} onCardClick={onCardClick} modoTela={modoTela} />
+          </div>
         ))
       )}
     </section>
   );
-}
+});
+
+export default CardGrid;

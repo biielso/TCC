@@ -1,16 +1,24 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Importa o hook para navegação
+import { useNavigate } from 'react-router-dom';
 import styles from './TelaLogin.module.css';
+import { loginUsuario } from '../../service/api';
 
 export default function TelaLogin() {
   const [emailOuCpf, setEmailOuCpf] = useState('');
   const [senha, setSenha] = useState('');
   const navigate = useNavigate(); // Hook do React Router para redirecionar
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // Evita reload da página
-    alert(`Entrando com:\nEmail/CPF: ${emailOuCpf}\nSenha: ${senha}`);
-    // Aqui você pode colocar a lógica real de login (API, validação, etc)
+  const [erro, setErro] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await loginUsuario({ email: emailOuCpf, senha });
+      localStorage.setItem('logado', 'true');
+      navigate('/catalogo');
+    } catch {
+      setErro('Email/CPF ou senha inválidos.');
+    }
   };
 
   const handleCadastroClick = (e) => {
@@ -53,6 +61,7 @@ export default function TelaLogin() {
             />
           </div>
 
+          {erro && <p className={styles.erro}>{erro}</p>}
           <button type="submit" className={styles.entrar}>Entrar</button>
 
           <p className={styles.link}>

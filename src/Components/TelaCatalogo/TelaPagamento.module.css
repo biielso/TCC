@@ -1,0 +1,136 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #5b4fcf 0%, #7c3aed 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.card h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.itemInfo {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.imagem {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.itemInfo h2 {
+  color: #333;
+  margin: 10px 0;
+}
+
+.itemInfo p {
+  color: #666;
+  font-size: 14px;
+}
+
+.preco {
+  color: #5b4fcf;
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+.metodosContainer h3 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.metodos {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.metodoBtn {
+  padding: 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.metodoBtn:hover {
+  border-color: #5b4fcf;
+  transform: translateY(-2px);
+}
+
+.metodoBtn.ativo {
+  background: linear-gradient(135deg, #5b4fcf, #7c3aed);
+  color: white;
+  border-color: #5b4fcf;
+}
+
+.acoes {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+}
+
+.btnPagar {
+  background: linear-gradient(135deg, #5b4fcf, #7c3aed);
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btnPagar:hover:not(:disabled) {
+  background: #5b4fcf;
+  transform: scale(1.02);
+}
+
+.btnPagar:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.btnVoltar {
+  background: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btnVoltar:hover {
+  background: #e0e0e0;
+}

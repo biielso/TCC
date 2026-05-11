@@ -1,15 +1,21 @@
+import React from "react";
 import styles from "./TelaCatalogo.module.css";
+import Mapa from "../Mapa/Mapa";
 
-export default function HeroSecao({ 
-  modoTela, 
-  destinoBusca, 
-  setDestinoBusca, 
-  precoMin, 
-  setPrecoMin, 
-  precoMax, 
-  setPrecoMax, 
-  setPaginaAtual 
-}) {
+const HeroSearch = React.forwardRef(function HeroSearch(
+  { 
+    modoTela, 
+    destinoBusca, 
+    setDestinoBusca, 
+    precoMin, 
+    setPrecoMin, 
+    precoMax, 
+    setPrecoMax, 
+    setPaginaAtual 
+  },
+  ref
+) {
+
   const getTitulo = () => {
     const titulos = {
       destinos: "Destinos",
@@ -25,9 +31,9 @@ export default function HeroSecao({
     const subtitulos = {
       contato: "Entre em contato conosco para mais informações",
       destinos: "Encontre passeios e atividades para suas viagens",
-      hospedagens: "Encontre hospedagens perfeitas para sua estadia",
-      pacotes: "Encontre os melhores pacotes para os melhores destinos",
-      promoções: "Encontre as melhores promoções com preços incríveis"
+      hospedagens: "Encontre hospedagens perfeitas",
+      pacotes: "Os melhores pacotes",
+      promoções: "Melhores promoções"
     };
     return subtitulos[modoTela] || "";
   };
@@ -43,7 +49,7 @@ export default function HeroSecao({
   };
 
   return (
-    <section className={styles.heroSearch}>
+    <section ref={ref} tabIndex={0} className={styles.heroSearch}>
       <div className={styles.heroPanel}>
         <div>
           <div className={styles.heroTitle}>
@@ -56,48 +62,50 @@ export default function HeroSecao({
         
         {modoTela !== "contato" && (
           <div className={styles.heroInputs}>
+
             <input
-              id="campo-nome"
+              data-input
               className={styles.heroInput}
               placeholder={getPlaceholder()}
               value={destinoBusca}
               onChange={(e) => setDestinoBusca(e.target.value)}
             />
+
             <input
-              id="campo-preco-min"
+              data-input
               className={styles.heroInput}
               type="number"
               placeholder="Preço mínimo (R$)"
               value={precoMin}
               onChange={(e) => setPrecoMin(e.target.value)}
             />
+
             <input
-              id="campo-preco-max"
+              data-input
               className={styles.heroInput}
               type="number"
               placeholder="Preço máximo (R$)"
               value={precoMax}
               onChange={(e) => setPrecoMax(e.target.value)}
             />
-<button
-  id="botao-buscar"
-  className={styles.heroBtn}
-  onClick={() => setPaginaAtual(1)}
->
-  Buscar
-</button>
 
-<button
-  id="botao-adicionar"
-  className={styles.heroBtnPlus}
-  onClick={() => console.log("Botão + clicado")}
->
-  +
-</button>
-
+            <button
+              data-input
+              className={styles.heroBtn}
+              onClick={() => setPaginaAtual(1)}
+            >
+              Buscar
+            </button>
           </div>
         )}
+        
+        {/* Mapa de localizações com largura limitada e centralizado */}
+        {/* <div style={{ maxWidth: '600px', margin: '20px auto' }}>
+          <Mapa />
+        </div> */}
       </div>
     </section>
   );
-}
+});
+
+export default HeroSearch;

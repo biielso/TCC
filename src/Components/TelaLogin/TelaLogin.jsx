@@ -13,8 +13,11 @@ export default function TelaLogin() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await loginUsuario({ email: emailOuCpf, senha });
+      const usuario = await loginUsuario({ email: emailOuCpf, senha });
+      const payload = JSON.parse(atob(usuario.acess_token.split('.')[1]));
       localStorage.setItem('logado', 'true');
+      localStorage.setItem('tipoUsuario', payload.role || '');
+      localStorage.setItem('token', usuario.acess_token);
       navigate('/catalogo');
     } catch {
       setErro('Email/CPF ou senha inválidos.');

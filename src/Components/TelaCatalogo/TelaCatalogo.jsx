@@ -60,7 +60,7 @@ export default function TelaCatalogo() {
 
   const [destinoSelecionado, setDestinoSelecionado] = useState(null);
   const { adicionar } = useContext(CarrinhoContext);
-  const [cadastroAberto, setCadastroAberto] = useState(false);
+  const [cadastroAberto, setCadastroAberto] = useState(null);
 
   /* ====== REFS PARA NAVEGAÇÃO ====== */
   const navbarRef = useRef(null);
@@ -179,7 +179,7 @@ export default function TelaCatalogo() {
         ref={navbarRef}
         modoTela={modoTela}
         setModoTela={setModoTela}
-        onAbrirCadastro={() => setCadastroAberto(true)}
+        onAbrirCadastro={(tipo) => setCadastroAberto(tipo)}
       />
 
       <HeroSearch
@@ -218,7 +218,7 @@ export default function TelaCatalogo() {
       />
 
       {cadastroAberto && (
-        <ModalCadastro onClose={() => setCadastroAberto(false)} />
+        <ModalCadastro tipo={cadastroAberto} onClose={() => setCadastroAberto(null)} />
       )}
     </main>
   );

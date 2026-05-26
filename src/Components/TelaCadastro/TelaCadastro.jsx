@@ -9,7 +9,7 @@ export default function TelaCadastro() {
   const [senha, setSenha] = useState(''); // 🌟 Novo estado para a senha
   const [nascimento, setNascimento] = useState('');
   const [cpf, setCpf] = useState('');
-  const [cep, setCep] = useState('');
+
 
   const navigate = useNavigate();
 
@@ -17,28 +17,38 @@ export default function TelaCadastro() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // 1. Montamos o "pacote" (JSON) exatamente com os nomes que o Java espera
-// 1. Montamos o "pacote" (JSON)
+    const hoje = new Date();
+    const dataNasc = new Date(nascimento);
+    const idade = hoje.getFullYear() - dataNasc.getFullYear();
+    const aniversarioPassou = hoje >= new Date(hoje.getFullYear(), dataNasc.getMonth(), dataNasc.getDate());
+    if (idade < 18 || (idade === 18 && !aniversarioPassou)) {
+      alert('Você precisa ter pelo menos 18 anos para se cadastrar.');
+      return;
+    }
+
     const novoUsuario = {
       nome: nome,
       email: email,
       senha: senha,
-      tipo: "CLIENTE", 
+      tipoUsuario: "CLIENTE",
       nascimento: nascimento,
       // 👇 A MÁGICA ACONTECE AQUI: O .replace tira tudo que não for número!
-      cpf: cpf.replace(/\D/g, ''), 
-      cep: cep.replace(/\D/g, '')
+      cpf: cpf.replace(/\D/g, '')
     };
 
     try {
-      // 2. Enviamos para o Java salvar no banco de dados
-      const usuarioSalvo = await cadastrarUsuario(novoUsuario);
-      
-      // 3. Se deu tudo certo, redireciona para o login
-      navigate('/login');
-      
+      const resposta = await cadastrarUsuario(novoUsuario);
+
+      if (resposta.acess_token) {
+        const payload = JSON.parse(atob(resposta.acess_token.split('.')[1]));
+        localStorage.setItem('logado', 'true');
+        localStorage.setItem('tipoUsuario', payload.role || '');
+        localStorage.setItem('token', resposta.acess_token);
+        navigate('/catalogo');
+      } else {
+        navigate('/login');
+      }
     } catch (erro) {
-      // 4. Se o Java der erro (ex: email já existe, faltou dado), cai aqui
       console.error("Erro ao cadastrar na API:", erro);
       alert('Erro ao realizar o cadastro. Verifique os dados e tente novamente.');
     }
@@ -123,19 +133,6 @@ export default function TelaCadastro() {
                 required
               />
             </div>
-          </div>
-
-          <div className={styles.campo}>
-            <label htmlFor="cep">CEP</label>
-            <input
-              type="text"
-              id="cep"
-              className={styles.barra}
-              placeholder="Digite seu CEP"
-              value={cep}
-              onChange={(e) => setCep(e.target.value)}
-              required
-            />
           </div>
 
           <button type="submit" className={styles.entrar}>

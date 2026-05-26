@@ -27,11 +27,9 @@ export const loginUsuario = async (credenciais) => {
 
 // Função para cadastrar usuário (usada na TelaCadastro)
 export const cadastrarUsuario = async (novoUsuario) => {
-    const resposta = await fetch(`${URLz}/usuarios`, {
+    const resposta = await fetch(`${URLz}/api/v1/auth/register`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(novoUsuario)
     });
     if (!resposta.ok) throw new Error("Erro ao cadastrar usuário");

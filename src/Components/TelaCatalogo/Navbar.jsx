@@ -12,7 +12,17 @@ const Navbar = React.forwardRef(function Navbar(
   const navigate = useNavigate();
 
   const [mapaAberto, setMapaAberto] = useState(false);
-  const logado = localStorage.getItem('logado') === 'true';
+  const [dropdownAberto, setDropdownAberto] = useState(false);
+  const [logado, setLogado] = useState(localStorage.getItem('logado') === 'true');
+  const [tipoUsuario, setTipoUsuario] = useState(localStorage.getItem('tipoUsuario'));
+
+  function handleLogout() {
+    localStorage.removeItem('logado');
+    localStorage.removeItem('tipoUsuario');
+    setLogado(false);
+    setTipoUsuario(null);
+    navigate('/entrada');
+  }
 
   const itemsRef = useRef([]);
 
@@ -63,12 +73,19 @@ const Navbar = React.forwardRef(function Navbar(
           >
             🗺️ Mapa
           </button>
-          {!logado && (
+          {!logado ? (
             <button
               className={styles.navLogo}
               onClick={() => navigate("/login")}
             >
               Fazer Login 👤
+            </button>
+          ) : (
+            <button
+              className={styles.navLogo}
+              onClick={handleLogout}
+            >
+              Sair 🚪
             </button>
           )}
         </div>
@@ -89,9 +106,27 @@ const Navbar = React.forwardRef(function Navbar(
         ))}
       </div>
 
-        <button className={styles.cartButton} onClick={onAbrirCadastro}>
-          ➕ Cadastrar
-        </button>
+        {(tipoUsuario === 'ADMIN' || tipoUsuario === 'FUNCIONARIO') && (
+          <div style={{ position: 'relative' }}>
+            <button className={styles.cartButton} onClick={() => setDropdownAberto(v => !v)}>
+              ➕ Cadastrar
+            </button>
+            {dropdownAberto && (
+              <div style={{ position: 'absolute', right: 0, top: '110%', background: 'white', border: '1px solid #d1d5db', borderRadius: 8, boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, minWidth: 160 }}>
+                <button style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: 14, color: '#374151' }}
+                  onClick={() => { onAbrirCadastro('destinos'); setDropdownAberto(false); }}>
+                  🗺️ Destinos
+                </button>
+                {tipoUsuario === 'ADMIN' && (
+                  <button style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: 14, color: '#374151' }}
+                    onClick={() => { onAbrirCadastro('funcionario'); setDropdownAberto(false); }}>
+                    👤 Funcionário
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </nav>
 
       {mapaAberto && (

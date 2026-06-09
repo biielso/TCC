@@ -107,15 +107,15 @@ const Navbar = React.forwardRef(function Navbar(
       </div>
 
         {(tipoUsuario === 'ADMIN' || tipoUsuario === 'FUNCIONARIO') && (
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', visibility: modoTela === 'contato' ? 'hidden' : 'visible' }}>
             <button className={styles.cartButton} onClick={() => setDropdownAberto(v => !v)}>
               ➕ Cadastrar
             </button>
             {dropdownAberto && (
               <div style={{ position: 'absolute', right: 0, top: '110%', background: 'white', border: '1px solid #d1d5db', borderRadius: 8, boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, minWidth: 160 }}>
                 <button style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: 14, color: '#374151' }}
-                  onClick={() => { onAbrirCadastro('destinos'); setDropdownAberto(false); }}>
-                  🗺️ Destinos
+                  onClick={() => { onAbrirCadastro(modoTela); setDropdownAberto(false); }}>
+                  {{ destinos: '🗺️', hospedagens: '🏨', pacotes: '✈️', 'promoções': '🏷️' }[modoTela]} {modoTela.charAt(0).toUpperCase() + modoTela.slice(1)}
                 </button>
                 {tipoUsuario === 'ADMIN' && (
                   <button style={{ display: 'block', width: '100%', padding: '10px 16px', background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', fontSize: 14, color: '#374151' }}

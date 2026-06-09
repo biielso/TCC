@@ -7,7 +7,7 @@ export function CarrinhoProvider({ children }) {
   const [carrinho, setCarrinho] = useState([]);
 
   function adicionar(item) {
-    setCarrinho((prev) => [...prev, item]);
+    setCarrinho((prev) => [...prev, { ...item, status: "pendente" }]);
   }
 
   function remover(nome) {

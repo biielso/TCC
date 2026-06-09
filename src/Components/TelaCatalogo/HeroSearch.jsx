@@ -11,7 +11,9 @@ const HeroSearch = React.forwardRef(function HeroSearch(
     setPrecoMin, 
     precoMax, 
     setPrecoMax, 
-    setPaginaAtual 
+    setPaginaAtual,
+    onAbrirCarrinho,
+    totalCarrinho
   },
   ref
 ) {
@@ -50,7 +52,6 @@ const HeroSearch = React.forwardRef(function HeroSearch(
 
   return (
     <section ref={ref} tabIndex={0} className={styles.heroSearch}>
-      <div className={styles.heroPanel}>
         <div>
           <div className={styles.heroTitle}>
             {getTitulo()}
@@ -74,7 +75,8 @@ const HeroSearch = React.forwardRef(function HeroSearch(
             <input
               data-input
               className={styles.heroInput}
-              type="number"
+              type="text"
+              inputMode="numeric"
               placeholder="Preço mínimo (R$)"
               value={precoMin}
               onChange={(e) => setPrecoMin(e.target.value)}
@@ -83,7 +85,8 @@ const HeroSearch = React.forwardRef(function HeroSearch(
             <input
               data-input
               className={styles.heroInput}
-              type="number"
+              type="text"
+              inputMode="numeric"
               placeholder="Preço máximo (R$)"
               value={precoMax}
               onChange={(e) => setPrecoMax(e.target.value)}
@@ -96,14 +99,16 @@ const HeroSearch = React.forwardRef(function HeroSearch(
             >
               Buscar
             </button>
+
+            <button
+              data-input
+              className={styles.heroBtnCarrinho}
+              onClick={onAbrirCarrinho}
+            >
+              🛒 {totalCarrinho > 0 && <span className={styles.badge}>{totalCarrinho}</span>}
+            </button>
           </div>
         )}
-        
-        {/* Mapa de localizações com largura limitada e centralizado */}
-        {/* <div style={{ maxWidth: '600px', margin: '20px auto' }}>
-          <Mapa />
-        </div> */}
-      </div>
     </section>
   );
 });

@@ -4,9 +4,8 @@ const URLz = "http://localhost:8080";
 
 // Função para buscar os destinos (usada na TelaCatalogo)
 export const buscarDestinos = async () => {
-    const token = localStorage.getItem("token");
     const resposta = await fetch(`${URLz}/destinos`, {
-        headers: { "Authorization": `Bearer ${token}` }
+        headers: authHeaders()
     });
     if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
     return resposta.json();
@@ -48,14 +47,113 @@ export const criarPedido = async (novoPedido) => {
     return resposta.json();
 };
 
-// Função para cadastrar um novo destino (ideal para a Tela do Administrador)
+const authHeaders = () => {
+    const token = localStorage.getItem("token");
+    const headers = { "Content-Type": "application/json" };
+    if (token) headers["Authorization"] = `Bearer ${token}`;
+    return headers;
+};
+
 export const criarDestino = async (novoDestino) => {
     const resposta = await fetch(`${URLz}/destinos`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: authHeaders(),
         body: JSON.stringify(novoDestino)
     });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
     return resposta.json();
+};
+
+export const removerDestino = async (id) => {
+    const resposta = await fetch(`${URLz}/destinos/${id}`, {
+        method: "DELETE",
+        headers: authHeaders()
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+};
+
+export const removerHospedagem = async (id) => {
+    const resposta = await fetch(`${URLz}/hospedagens/${id}`, {
+        method: "DELETE",
+        headers: authHeaders()
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+};
+
+export const removerPacote = async (id) => {
+    const resposta = await fetch(`${URLz}/pacotes/${id}`, {
+        method: "DELETE",
+        headers: authHeaders()
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+};
+
+export const removerPromocao = async (id) => {
+    const resposta = await fetch(`${URLz}/promocoes/${id}`, {
+        method: "DELETE",
+        headers: authHeaders()
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+};
+
+export const buscarHospedagens = async () => {
+    const resposta = await fetch(`${URLz}/hospedagens`, { headers: authHeaders() });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+};
+
+export const criarHospedagem = async (dados) => {
+    const resposta = await fetch(`${URLz}/hospedagens`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify(dados)
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+};
+
+export const buscarPacotes = async () => {
+    const resposta = await fetch(`${URLz}/pacotes`, { headers: authHeaders() });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+};
+
+export const criarPacote = async (dados) => {
+    const resposta = await fetch(`${URLz}/pacotes`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify(dados)
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+};
+
+export const buscarPromocoes = async () => {
+    const resposta = await fetch(`${URLz}/promocoes`, { headers: authHeaders() });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+};
+
+export const criarPromocao = async (dados) => {
+    const resposta = await fetch(`${URLz}/promocoes`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify(dados)
+    });
+    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    return resposta.json();
+};
+
+export const buscarNomeUsuario = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const email = payload.sub;
+    const resposta = await fetch(`${URLz}/usuarios`, {
+        headers: authHeaders()
+    });
+    if (!resposta.ok) return null;
+    const usuarios = await resposta.json();
+    const usuario = usuarios.find(u => u.email === email);
+    return usuario ? usuario.nome : null;
 };

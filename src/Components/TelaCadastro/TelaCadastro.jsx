@@ -129,7 +129,10 @@ export default function TelaCadastro() {
                 className={styles.barra}
                 placeholder="000.000.000-00"
                 value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
+                onChange={(e) => {
+                  const v = e.target.value.replace(/\D/g, '').slice(0, 11);
+                  setCpf(v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4').replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3').replace(/(\d{3})(\d{1,3})/, '$1.$2'));
+                }}
                 required
               />
             </div>

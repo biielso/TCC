@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styles from "./ModalCadastro.module.css";
-import { cadastrarUsuario } from "../../service/api";
+import { cadastrarUsuario, criarDestino, criarHospedagem, criarPacote, criarPromocao } from "../../service/api";
 
 const categorias = ["Destinos", "Hospedagens", "Pacotes", "Promoções"];
 
@@ -11,13 +11,18 @@ const placeholders = {
   Promoções: "Ex: Voo para Fortaleza",
 };
 
-export default function ModalCadastro({ onClose, tipo }) {
-  // --- estado destinos ---
+const apiPorCategoria = {
+  Destinos: criarDestino,
+  Hospedagens: criarHospedagem,
+  Pacotes: criarPacote,
+  "Promoções": criarPromocao,
+};
+
+export default function ModalCadastro({ onClose, tipo, onItemCriado }) {
   const [categoria, setCategoria] = useState("Destinos");
   const [form, setForm] = useState({ nome: "", descricao: "", preco: "", imagem: "" });
-  const [itens, setItens] = useState({ Destinos: [], Hospedagens: [], Pacotes: [], Promoções: [] });
+  const [mensagem, setMensagem] = useState("");
 
-  // --- estado funcionário ---
   const [formFunc, setFormFunc] = useState({ nome: "", email: "", senha: "", tipo: "FUNCIONARIO" });
   const [mensagemFunc, setMensagemFunc] = useState("");
 
@@ -25,10 +30,25 @@ export default function ModalCadastro({ onClose, tipo }) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  function precoParaNumero(valor) {
+    const limpo = String(valor).replace(/[^\d,.]/g, "").replace(",", ".");
+    const num = parseFloat(limpo);
+    return isNaN(num) ? null : num;
+  }
+
+  async function handleSubmit(e) {
     e.preventDefault();
-    setItens((prev) => ({ ...prev, [categoria]: [...prev[categoria], { ...form }] }));
-    setForm({ nome: "", descricao: "", preco: "", imagem: "" });
+    const precoNum = precoParaNumero(form.preco);
+    if (!precoNum) return setMensagem("Preço inválido. Use somente números (ex: 299.90).");
+    try {
+      const payload = { ...form, preco: precoNum, ativo: true };
+      const criado = await apiPorCategoria[categoria](payload);
+      setMensagem("Cadastrado com sucesso!");
+      setForm({ nome: "", descricao: "", preco: "", imagem: "" });
+      if (onItemCriado) onItemCriado(categoria, criado);
+    } catch {
+      setMensagem("Erro ao salvar. Verifique os dados e o servidor.");
+    }
   }
 
   async function handleSubmitFunc(e) {
@@ -41,8 +61,6 @@ export default function ModalCadastro({ onClose, tipo }) {
       setMensagemFunc("Erro ao cadastrar. Verifique os dados.");
     }
   }
-
-  const listaAtual = itens[categoria];
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -114,35 +132,20 @@ export default function ModalCadastro({ onClose, tipo }) {
                     value={form.descricao} onChange={handleChange} required rows={4} />
 
                   <label className={styles.label}>Preço</label>
-                  <input name="preco" className={styles.input} placeholder="R$ 299,00"
+                  <input name="preco" className={styles.input} placeholder="Ex: 299.90"
                     value={form.preco} onChange={handleChange} required />
 
                   <label className={styles.label}>URL da Imagem</label>
                   <input name="imagem" className={styles.input} placeholder="https://exemplo.com/imagem.jpg"
                     value={form.imagem} onChange={handleChange} required />
 
+                  {mensagem && (
+                    <p style={{ color: mensagem.includes("sucesso") ? "green" : "red", fontSize: 13, marginTop: 8 }}>
+                      {mensagem}
+                    </p>
+                  )}
                   <button type="submit" className={styles.addBtn}>Adicionar</button>
                 </form>
-              </div>
-
-              <div className={styles.card}>
-                <h2 className={styles.cardTitle}>{categoria} ({listaAtual.length})</h2>
-                {listaAtual.length === 0 ? (
-                  <p className={styles.vazio}>Nenhum produto cadastrado nesta categoria</p>
-                ) : (
-                  <div className={styles.lista}>
-                    {listaAtual.map((item, i) => (
-                      <div key={i} className={styles.itemLista}>
-                        {item.imagem && <img src={item.imagem} alt={item.nome} className={styles.itemImg} />}
-                        <div>
-                          <strong>{item.nome}</strong>
-                          <p>{item.descricao}</p>
-                          <span className={styles.itemPreco}>{item.preco}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             </>
           )}

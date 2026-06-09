@@ -1,6 +1,8 @@
 .container {
   font-family: "Poppins", sans-serif;
-  padding: 20px;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
   background-color: #ffffff;
 }
 
@@ -12,7 +14,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 14px 28px;
-  border-radius: 12px;
   margin-bottom: 26px;
 }
 
@@ -90,10 +91,11 @@
 .heroSearch {
   background: linear-gradient(135deg, #5b4fcf, #7c3aed);
   color: white;
-  border-radius: 16px;
   padding: 36px;
   text-align: center;
   margin-bottom: 40px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .heroTitle {
@@ -129,6 +131,39 @@
 
 .heroBtn:hover {
   background-color: #7c3aed;
+}
+
+.heroBtnCarrinho {
+  position: relative;
+  background-color: #5b4fcf;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.heroBtnCarrinho:hover {
+  background-color: #7c3aed;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ef4444;
+  color: white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* GRID DE CARDS */
@@ -212,6 +247,26 @@
 .btnPagar:hover {
   background: #5b4fcf;
   transform: scale(1.05);
+}
+
+.btnRemover {
+  align-self: flex-end;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 6px;
+  transition: 0.2s;
+}
+
+.btnRemover:hover {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
 }
 
 .preco {
@@ -367,7 +422,10 @@
 }
 
 .contato .grid {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
 }
 
 /* ===== CONTATO ===== */
@@ -382,6 +440,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 600px;
   height: 300px;
   background: linear-gradient(135deg, #5b4fcf, #7c3aed);
   border-radius: 16px;
@@ -441,8 +500,68 @@
   background-color: #5b4fcf;
 }
 
-*:focus {
-  outline: none;
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.confirmBox {
+  background: white;
+  border-radius: 12px;
+  padding: 28px 32px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+.confirmBox p {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.confirmBtns {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.confirmOk {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 9px 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.confirmOk:hover {
+  background: #b91c1c;
+}
+
+.confirmCancelar {
+  background: #f3f4f6;
+  color: #374151;
+  border: none;
+  padding: 9px 28px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.confirmCancelar:hover {
+  background: #e5e7eb;
 }
 
 /* MODAL MAPA */
@@ -488,4 +607,27 @@
 .closeButton:hover {
   background: #cc0000;
   transform: scale(1.1);
+}
+
+.boasVindas {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #5b4fcf, #7c3aed);
+  color: white;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(91, 79, 207, 0.4);
+  z-index: 9999;
+  animation: fadeInOut 4s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
 }

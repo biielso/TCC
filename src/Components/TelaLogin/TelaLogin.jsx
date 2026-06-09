@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './TelaLogin.module.css';
-import { loginUsuario } from '../../service/api';
+import { loginUsuario, buscarNomeUsuario } from '../../service/api';
 
 export default function TelaLogin() {
   const [emailOuCpf, setEmailOuCpf] = useState('');
@@ -18,6 +18,9 @@ export default function TelaLogin() {
       localStorage.setItem('logado', 'true');
       localStorage.setItem('tipoUsuario', payload.role || '');
       localStorage.setItem('token', usuario.acess_token);
+      localStorage.setItem('boasVindas', 'true');
+      const nome = await buscarNomeUsuario();
+      localStorage.setItem('nomeUsuario', nome || payload.sub || '');
       navigate('/catalogo');
     } catch {
       setErro('Email/CPF ou senha inválidos.');
